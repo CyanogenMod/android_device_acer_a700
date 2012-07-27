@@ -20,6 +20,7 @@
 #define LOG_TAG "tiny_hw"
 #define LOG_NDEBUG 0
 
+#include <dlfcn.h>
 #include <errno.h>
 #include <pthread.h>
 #include <stdint.h>
@@ -853,6 +854,17 @@ static int adev_open(const hw_module_t* module, const char* name,
 {
     struct tiny_audio_device *adev;
     int ret;
+
+    // Initialize A1026 chip required for audio playback
+    void *lib = dlopen("liba1026.so", RTLD_NOW);
+    if (lib == NULL) {
+        ALOGE("Unable to load liba1026.so (%d)", errno);
+    } else {
+        ((void (*)(void)) dlsym(lib, "_Z10open_a1026v"))();
+        ((void (*)(void)) dlsym(lib, "_Z17doA1026_Uart_initv"))();
+        ((void (*)(void)) dlsym(lib, "_Z16doA1026_I2C_initv"))();
+        ((void (*)(void)) dlsym(lib, "_Z11close_a1026v"))();
+    }
 
     if (strcmp(name, AUDIO_HARDWARE_INTERFACE) != 0)
         return -EINVAL;

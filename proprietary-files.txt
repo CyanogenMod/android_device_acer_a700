@@ -46,6 +46,7 @@ lib/hw/gralloc.tegra.so
 lib/hw/hwcomposer.tegra.so
 lib/hw/lights.tegra.so
 lib/hw/sensors.tegra.so
+lib/liba1026.so
 lib/libakmd.so
 lib/libami.so
 lib/libami_sensor_mw.so

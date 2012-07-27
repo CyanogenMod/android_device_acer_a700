@@ -193,14 +193,14 @@ static int check_input_parameters(uint32_t sample_rate, int format, int channel_
         return -EINVAL;
 
     switch(sample_rate) {
-    /* case 8000: */
-    /* case 11025: */
-    /* case 16000: */
-    /* case 22050: */
-    /* case 24000: */
-    /* case 32000: */
+    case 8000:
+    case 11025:
+    case 16000:
+    case 22050:
+    case 24000:
+    case 32000:
     case 44100:
-    /* case 48000: */
+    case 48000:
         break;
     default:
         return -EINVAL;
@@ -736,6 +736,9 @@ static int adev_open_input_stream(struct audio_hw_device *dev,
     struct tiny_stream_in *in;
     int ret;
     int channel_count = popcount(config->channel_mask);
+
+    if (check_input_parameters(config->sample_rate, config->format, config->channel_mask) != 0)
+        return -EINVAL;
 
     in = calloc(1, sizeof(struct tiny_stream_in));
     if (!in)

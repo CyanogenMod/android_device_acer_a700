@@ -297,7 +297,7 @@ static ssize_t out_write(struct audio_stream_out *stream, const void* buffer,
 
     if (!out->pcm) {
 	ALOGV("out_write(%p) opening PCM\n", stream);
-	out->pcm = pcm_open(0, 0, PCM_OUT | PCM_MMAP, &out->config);
+	out->pcm = pcm_open(1, 0, PCM_OUT | PCM_MMAP, &out->config);
 
 	if (!pcm_is_ready(out->pcm)) {
 	    ALOGE("Failed to open output PCM: %s", pcm_get_error(out->pcm));
@@ -894,9 +894,10 @@ static int adev_open(const hw_module_t* module, const char* name,
     adev->device.close_input_stream = adev_close_input_stream;
     adev->device.dump = adev_dump;
 
-    adev->mixer = mixer_open(0);
+    // Mixer 0 = SPDIF, Mixer 1 = output
+    adev->mixer = mixer_open(1);
     if (!adev->mixer) {
-	ALOGE("Failed to open mixer 0\n");
+	ALOGE("Failed to open mixer 1\n");
 	goto err;
     }
 

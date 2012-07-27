@@ -10,7 +10,5 @@
 ## <sysfs_path> - List of sysfs paths to source devices
 ######################
 
-dev_mount external_sdcard /storage/storage1 auto /devices/platform/sdhci-tegra.0/mmc_host/mmc2
-
-# TODO: Fix
-dev_mount external_usb_disk /mnt/usb_storage auto /devices/platform/tegra-ehci.0/usb2 /devices/platform/tegra-ehci.0/usb3 /devices/platform/tegra-ehci.2/usb1 /devices/platform/tegra-ehci.2/usb2 /devices/platform/tegra-ehci.0/usb1
+dev_mount external_sdcard /storage/sdcard1 auto /devices/platform/sdhci-tegra.0/mmc_host/mmc2
+dev_mount external_usb_disk /storage/usb0 auto /devices/platform/tegra-ehci.0/usb2 /devices/platform/tegra-ehci.0/usb3 /devices/platform/tegra-ehci.2/usb1 /devices/platform/tegra-ehci.2/usb2 /devices/platform/tegra-ehci.0/usb1

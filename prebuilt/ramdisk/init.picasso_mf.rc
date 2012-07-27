@@ -4,25 +4,17 @@ on early-init
     mount debugfs debugfs /sys/kernel/debug
 
     # for backwards compatibility
-    # TODO: FIXME	
-    # export SECONDARY_STORAGE /storage/storage1:/storage/stor
     export EXTERNAL_STORAGE /storage/sdcard0
     mkdir /storage 0050 system sdcard_r
     mkdir /storage/sdcard0 0000 system system
     symlink /storage/sdcard0 /sdcard
     symlink /storage/sdcard0 /mnt/sdcard
 
-    # TODO: FIXME
-    # export SECOND_VOLUME_STORAGE /mnt/external_sd
-    # mkdir /mnt/external_sd 0000 system system
-    # 
-    # export THIRD_VOLUME_STORAGE /mnt/usb_storage
-    # mkdir /mnt/usb_storage 0700 system system
-    # mount tmpfs tmpfs /mnt/usb_storage mode=755,gid=1000
-
-    # create directory for mounting usb drives
-    # mkdir /mnt/usbdrive 0666 system system
-    # symlink /mnt/usbdrive /usbdrive
+    export SECONDARY_STORAGE /storage/sdcard1:/storage/usb0
+    mkdir /storage/sdcard1 0000 system system
+    symlink /storage/sdcard1 /mnt/external_sd
+    mkdir /storage/usb0 0000 system system
+    symlink /storage/usb0 /mnt/usb_storage
 
 on fs
     setprop ro.crypto.tmpfs_options size=128m,mode=0771,uid=1000,gid=1000
@@ -41,10 +33,6 @@ on post-fs-data
 
     # Set indication (checked by vold) that we have finished this action
     setprop vold.post_fs_data_done 1
-
-    # Insert NTFS filesystem driver
-	# TODO: What do we do with this?
-    # insmod system/lib/modules/ufsd.ko
 
 on boot
 

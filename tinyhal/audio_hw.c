@@ -186,11 +186,15 @@ void select_devices(struct tiny_audio_device *adev)
 
 static int check_input_parameters(uint32_t sample_rate, int format, int channel_count)
 {
-    if (format != AUDIO_FORMAT_PCM_16_BIT)
+    if (format != AUDIO_FORMAT_PCM_16_BIT) {
+        ALOGE("Unsupported format: %d", format);
         return -EINVAL;
+    }
 
-    if ((channel_count < 1) || (channel_count > 2))
+    if ((channel_count < 1) || (channel_count > 2)) {
+        ALOGE("Unsupported channel count: %d", channel_count);
         return -EINVAL;
+    }
 
     switch(sample_rate) {
     case 8000:
@@ -203,6 +207,7 @@ static int check_input_parameters(uint32_t sample_rate, int format, int channel_
     case 48000:
         break;
     default:
+        ALOGE("Unsupported sample rate: %d", sample_rate);
         return -EINVAL;
     }
 
@@ -428,9 +433,9 @@ static int in_standby(struct audio_stream *stream)
 
     if (in->pcm) {
         ret = pcm_close(in->pcm);
-        LOGV("in_standby(%p) closing PCM\n", stream);
+        ALOGV("in_standby(%p) closing PCM\n", stream);
         if (ret != 0) {
-            LOGE("in_standby(%p) PCM failed: %d\n", stream, ret);
+            ALOGE("in_standby(%p) PCM failed: %d\n", stream, ret);
         }
         in->pcm = NULL;
     }
@@ -483,7 +488,7 @@ static int get_next_buffer(struct resampler_buffer_provider *buffer_provider,
                                    in->config.period_size *
                                        audio_stream_frame_size(&in->stream.common));
         if (in->read_status != 0) {
-            LOGE("get_next_buffer() pcm_read error %d", in->read_status);
+            ALOGE("get_next_buffer() pcm_read error %d", in->read_status);
             buffer->raw = NULL;
             buffer->frame_count = 0;
             return in->read_status;
@@ -560,15 +565,15 @@ static ssize_t in_read(struct audio_stream_in *stream, void* buffer,
     size_t frames_rq = bytes / audio_stream_frame_size(&stream->common);
 
     if (!in->pcm) {
-	LOGV("in_read(%p) opening PCM\n", stream);
-	in->pcm = pcm_open(0, 0, PCM_IN, &in->config);
+	ALOGV("in_read(%p) opening PCM\n", stream);
+	in->pcm = pcm_open(1, 0, PCM_IN, &in->config);
 
 	if (!pcm_is_ready(in->pcm)) {
-	    LOGE("Failed to open input PCM: %s", pcm_get_error(in->pcm));
+	    ALOGE("Failed to open input PCM: %s", pcm_get_error(in->pcm));
 	    pcm_close(in->pcm);
 	    return -EBUSY;
 	}
-	LOGV("in_read(%p) buffer sizes: android: %d, alsa: %d\n", stream,
+	ALOGV("in_read(%p) buffer sizes: android: %d, alsa: %d\n", stream,
              bytes, pcm_get_buffer_size(in->pcm));
     }
 
@@ -577,7 +582,7 @@ static ssize_t in_read(struct audio_stream_in *stream, void* buffer,
     else
         ret = pcm_read(in->pcm, buffer, bytes);
     if (ret != 0) {
-	LOGE("in_read(%p) failed: %d\n", stream, ret);
+	ALOGE("in_read(%p) failed: %d\n", stream, ret);
 	return ret;
     }
 
@@ -718,12 +723,8 @@ static int adev_get_mic_mute(const struct audio_hw_device *dev, bool *state)
 static size_t adev_get_input_buffer_size(const struct audio_hw_device *dev,
                                          const struct audio_config *config)
 {
-    size_t size;
-
-    if (check_input_parameters(sample_rate, format, channel_count) != 0)
-        return 0;
-
-    return get_input_buffer_size(sample_rate, format, channel_count);
+    return get_input_buffer_size(config->sample_rate, config->format,
+                                 popcount(config->channel_mask));
 }
 
 static int adev_open_input_stream(struct audio_hw_device *dev,
@@ -737,7 +738,7 @@ static int adev_open_input_stream(struct audio_hw_device *dev,
     int ret;
     int channel_count = popcount(config->channel_mask);
 
-    if (check_input_parameters(config->sample_rate, config->format, config->channel_mask) != 0)
+    if (check_input_parameters(config->sample_rate, config->format, channel_count) != 0)
         return -EINVAL;
 
     in = calloc(1, sizeof(struct tiny_stream_in));
@@ -763,7 +764,7 @@ static int adev_open_input_stream(struct audio_hw_device *dev,
     in->stream.read = in_read;
     in->stream.get_input_frames_lost = in_get_input_frames_lost;
 
-    in->requested_rate = *sample_rate;
+    in->requested_rate = config->sample_rate;
 
     pthread_mutex_lock(&adev->route_lock);
     adev->devices &= ~AUDIO_DEVICE_IN_ALL;

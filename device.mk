@@ -21,7 +21,11 @@ PRODUCT_PROPERTY_OVERRIDES := \
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 	persist.sys.usb.config=mtp
 
-include frameworks/native/build/tablet-dalvik-heap.mk
+# The "7 inch" profile is more suited for us than the general profile
+include frameworks/native/build/tablet-7in-hdpi-1024-dalvik-heap.mk
+
+# we have enough storage space to hold precise GC data
+PRODUCT_TAGS += dalvik.gc.type-precise
 
 PRODUCT_COPY_FILES += \
     device/acer/a700/prebuilt/ramdisk/init.picasso_mf.rc:root/init.picasso_mf.rc \

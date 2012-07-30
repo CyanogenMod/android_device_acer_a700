@@ -58,6 +58,7 @@ PRODUCT_PACKAGES := \
     libaudioutils \
     audio.a2dp.default \
     audio.usb.default \
+    a1026_init \
     librs_jni \
     make_ext4fs \
     setup_fs \

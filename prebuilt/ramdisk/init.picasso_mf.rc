@@ -251,3 +251,9 @@ on boot
 # service acer_dock_detect /system/bin/acer_dock_daemon
 #     class late_start
 #     user system
+
+service a1026_init /system/bin/a1026_init
+    class main
+    user media
+    group audio
+    oneshot

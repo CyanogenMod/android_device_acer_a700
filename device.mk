@@ -33,7 +33,6 @@ PRODUCT_COPY_FILES += \
     device/acer/a700/prebuilt/ramdisk/ueventd.picasso_mf.rc:root/ueventd.picasso_mf.rc \
     device/acer/a700/prebuilt/ramdisk/init.picasso_mf.usb.rc:root/init.picasso_mf.usb.rc \
 
-# TODO: Find what's needed
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/tablet_core_hardware.xml:system/etc/permissions/tablet_core_hardware.xml \
     frameworks/native/data/etc/android.hardware.location.gps.xml:system/etc/permissions/android.hardware.location.gps.xml \
@@ -41,6 +40,7 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.wifi.direct.xml:system/etc/permissions/android.hardware.wifi.direct.xml \
     frameworks/native/data/etc/android.hardware.sensor.light.xml:system/etc/permissions/android.hardware.sensor.light.xml \
     frameworks/native/data/etc/android.hardware.sensor.gyroscope.xml:system/etc/permissions/android.hardware.sensor.gyroscope.xml \
+    frameworks/native/data/etc/android.hardware.camera.autofocus.xml:system/etc/permissions/android.hardware.camera.autofocus.xml \
     frameworks/native/data/etc/android.hardware.camera.front.xml:system/etc/permissions/android.hardware.camera.front.xml \
     frameworks/native/data/etc/android.hardware.touchscreen.multitouch.jazzhand.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.jazzhand.xml \
     frameworks/native/data/etc/android.software.sip.voip.xml:system/etc/permissions/android.software.sip.voip.xml \
@@ -56,7 +56,6 @@ PRODUCT_COPY_FILES += \
     device/acer/a700/prebuilt/usr/keylayout/acer-dock.kl:system/usr/keylayout/acer-dock.kl \
     device/acer/a700/prebuilt/usr/keylayout/gpio-keys.kl:system/usr/keylayout/gpio-keys.kl
 
-# TODO: Find out which is necessary
 PRODUCT_PACKAGES := \
     audio.primary.tegra \
     libaudioutils \

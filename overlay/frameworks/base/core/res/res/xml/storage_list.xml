@@ -15,7 +15,6 @@
 ** See the License for the specific language governing permissions and
 ** limitations under the License.
 */
-TODO: Add external/usb
 -->
 
 <!-- The <device> element should contain one or more <storage> elements.

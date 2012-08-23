@@ -21,6 +21,11 @@ PRODUCT_PROPERTY_OVERRIDES := \
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 	persist.sys.usb.config=mtp
 
+# Don't store dalvik on /cache, it gets annoying when /cache is wiped
+# by the bootloader everytime we boot into recovery
+PRODUCT_PROPERTY_OVERRIDES += \
+    dalvik.vm.dexopt-data-only=1
+
 # The "7 inch" profile is more suited for us than the general profile
 include frameworks/native/build/tablet-7in-hdpi-1024-dalvik-heap.mk
 

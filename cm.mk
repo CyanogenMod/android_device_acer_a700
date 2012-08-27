@@ -4,6 +4,10 @@ $(call inherit-product, vendor/cm/config/gsm.mk)
 # Release name
 PRODUCT_RELEASE_NAME := A700
 
+# Boot Animation
+TARGET_SCREEN_WIDTH := 1920
+TARGET_SCREEN_HEIGHT := 1200
+
 # Inherit some common CM stuff.
 $(call inherit-product, vendor/cm/config/common_full_tablet_wifionly.mk)
 

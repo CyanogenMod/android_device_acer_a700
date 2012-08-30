@@ -252,8 +252,3 @@ on boot
 #     class late_start
 #     user system
 
-service a1026_init /system/bin/a1026_init
-    class main
-    user media
-    group audio
-    oneshot

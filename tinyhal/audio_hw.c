@@ -40,6 +40,8 @@
 #include <audio_utils/resampler.h>
 #include <hardware/audio_effect.h>
 
+#include <a1026.h>
+
 #define MAX_PCM_CARDS 2
 #define MAX_PCM_DEVICES 4
 #define MAX_PCM (MAX_PCM_CARDS * MAX_PCM_DEVICES)
@@ -248,7 +250,7 @@ static size_t get_input_buffer_size(uint32_t sample_rate, int format,
 
 static uint32_t out_get_sample_rate(const struct audio_stream *stream)
 {
-    return 44100;
+    return 48000;
 }
 
 static int out_set_sample_rate(struct audio_stream *stream, uint32_t rate)
@@ -839,7 +841,7 @@ static int adev_open_input_stream(struct audio_hw_device *dev,
     pthread_mutex_unlock(&adev->route_lock);
 
     in->config.channels = 2;
-    in->config.rate = 44100;
+    in->config.rate = 48000; // A1026 only supports 48000Hz
     in->config.period_count = 4;
     in->config.period_size = 1024;
     in->config.format = PCM_FORMAT_S16_LE;
@@ -867,6 +869,10 @@ static int adev_open_input_stream(struct audio_hw_device *dev,
         }
     }
 
+    // Enable A1026 record mode
+    // TODO: Varying mode based on situation
+    a1026_set_config(A1026_TABLE_30CM_CAMCORDER_INTMIC_REAR);
+
     *stream_in = &in->stream;
     return 0;
 err:
@@ -883,6 +889,9 @@ static void adev_close_input_stream(struct audio_hw_device *dev,
                                    struct audio_stream_in *stream)
 {
     struct tiny_stream_in *in = (struct tiny_stream_in *)stream;
+
+    // Disable A1026
+    a1026_set_config(A1026_TABLE_SUSPEND);
 
     if (in->pcm)
 	pcm_close(in->pcm);
@@ -1168,6 +1177,9 @@ static int adev_open(const hw_module_t* module, const char* name,
 {
     struct tiny_audio_device *adev;
     int ret;
+
+    // Initialize A1026 chip required for audio playback
+    a1026_init();
 
     if (strcmp(name, AUDIO_HARDWARE_INTERFACE) != 0)
         return -EINVAL;

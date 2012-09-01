@@ -184,4 +184,7 @@
          the wallpaper width suggestion by the launcher may be too large for
          the GPU to handle. -->
     <integer name="config_wallpaperMaxWidth">2048</integer>
+
+    <!-- Setting to false will disable CM's IME switcher implementation for tablets -->
+    <bool name="config_show_cmIMESwitcher">false</bool>
 </resources>

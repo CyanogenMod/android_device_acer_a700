@@ -1,6 +1,7 @@
 bin/glgps_nvidiaTegra2android
 bin/nvcpud
 bin/tf_daemon
+etc/enctune.conf
 etc/firmware/UartSet1024Kbps.bin
 etc/firmware/UartSet2048Kbps.bin
 etc/firmware/UartSet3Mbps.bin
@@ -12,6 +13,7 @@ etc/firmware/nvavp_os_eff00000.bin
 etc/firmware/nvavp_vid_ucode.bin
 etc/firmware/nvavp_vid_ucode_alt.bin
 etc/firmware/spkeq_48k.bin
+etc/model_frontal.xml
 etc/wifi/bcmdhd.cal
 lib/egl/libEGL_tegra.so
 lib/egl/libEGL_tegra_impl.so
@@ -92,4 +94,4 @@ lib/libnvwinsys.so
 lib/libnvwsi.so
 lib/libstagefrighthw.so
 lib/libtf_crypto_sst.so
-
+lib/libtjpg.so

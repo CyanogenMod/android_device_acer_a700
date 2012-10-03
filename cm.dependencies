@@ -1,0 +1,6 @@
+[
+	{
+		"repository": "android_kernel_acer_t30",
+		"target_path": "kernel/acer/t30"
+	}
+]

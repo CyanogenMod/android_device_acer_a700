@@ -61,3 +61,7 @@ BOARD_EGL_CFG := device/acer/a700/prebuilt/etc/egl.cfg
 BOARD_HAS_NO_SELECT_BUTTON := true
 # Use this flag if the board has a ext4 partition larger than 2gb
 BOARD_HAS_LARGE_FILESYSTEM := true
+
+# Samsung EMMC brick bug
+# Already disabled in kernel, but disable again for safety
+BOARD_SUPPRESS_EMMC_WIPE := true

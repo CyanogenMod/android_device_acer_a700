@@ -25,6 +25,7 @@ on post-fs-data
     mkdir /data/misc/wifi 0770 wifi wifi
     mkdir /data/misc/wifi/sockets 0770 wifi wifi
     mkdir /data/misc/dhcp 0770 dhcp dhcp
+    mkdir /data/nvcam 0700 media camera
     chown dhcp dhcp /data/misc/dhcp
 
     mkdir /data/gps 700 gps system
@@ -53,18 +54,25 @@ on boot
     chmod 0660 /sys/class/rfkill/rfkill0/type
     chown bluetooth bluetooth /sys/class/rfkill/rfkill0/state
     chown bluetooth bluetooth /sys/class/rfkill/rfkill0/type
+    chown bluetooth bluetooth /sys/dev-info_bt/vendor
 
     # bluetooth MAC address programming
     chown bluetooth bluetooth ro.bt.bdaddr_path
     chown bluetooth bluetooth /system/etc/bluetooth
-    setprop ro.bt.bdaddr_path "/sys/at24/BTMAC"
+    chown bluetooth bluetooth /data/misc/bluetooth
+    setprop ro.bt.bdaddr_path "/sys/dev-info_eeprom/BTMAC"
+
+# nvdps
+    chown system system /sys/class/graphics/fb0/device/nvdps
 
 # backlight
     chown system system /sys/class/backlight/pwm-backlight/brightness
 
 # Touch
+    chmod 644 /sys/Touch/plugged
     chmod 664 /sys/Touch/sensitivity
     chmod 664 /sys/Touch/filter
+    chown system system /sys/Touch/plugged
     chown system system /sys/Touch/sensitivity
     chown system system /sys/Touch/filter
 
@@ -74,6 +82,10 @@ on boot
 # didim
     chown system system /sys/class/graphics/fb0/device/smartdimmer/enable
     chown system system /sys/class/graphics/fb0/device/smartdimmer/aggressiveness
+    chown system system /sys/class/graphics/fb0/device/smartdimmer/aggress_list
+    chown system system /sys/class/graphics/fb0/device/smartdimmer/list_size
+    chown system system /sys/class/graphics/fb0/device/smartdimmer/scenario
+    chown system system /sys/class/graphics/fb0/device/smartdimmer/aggress_table
 
 # eeprom
     chown system system /sys/at24/SerialNumberwithoutBarcode
@@ -85,15 +97,8 @@ on boot
     chown system system /sys/devices/platform/stk-oss/als_enable
 
 # Sensor
-    chmod 666 /dev/nvhost-ctrl
-    chmod 666 /dev/nvhost-display
-    chmod 666 /dev/nvhost-dsi
-    chmod 666 /dev/nvhost-gr2d
-    chmod 666 /dev/nvhost-gr3d
-    chmod 666 /dev/nvhost-isp
-    chmod 666 /dev/nvhost-mpe
-    chmod 666 /dev/nvhost-vi
     chown system system /sys/bus/iio/devices/device0/als_ir_mode
+    chown system system /sys/bus/iio/devices/device0/als_enable
     chown system system /sys/bus/iio/devices/device0/proximity_enable
 
 # Power management settings
@@ -109,6 +114,15 @@ on boot
     write /sys/module/cpu_tegra3/parameters/auto_hotplug 1
     write /sys/module/cpuidle/parameters/lp2_in_idle 1
 
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/go_maxspeed_load
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/max_boost
+    chown system system /sys/dev-power_mode/power_mode
+
+    write /sys/module/cpu_tegra/parameters/performance_mode 0
+    write /sys/module/cpu_tegra/parameters/balanced_mode 1200000
+    write /sys/module/cpu_tegra/parameters/powersaving_mode 1200000
+    write /sys/class/graphics/fb0/device/smartdimmer/aggress_table 1:1,3/2:3,3/3:3,3
+
 # Default Read Ahead value for sdcards
     write /sys/block/mmcblk0/queue/read_ahead_kb 2048
     write /sys/block/mmcblk1/queue/read_ahead_kb 2048
@@ -117,6 +131,19 @@ on boot
 # captured by default in bugreports
     chmod 0400 /sys/kernel/debug/binder/stats
     chmod 0400 /sys/kernel/debug/binder/state
+
+#console_suspend
+    chown system system /sys/module/printk/parameters/console_suspend
+
+# Writable nodes for NvCPLSvc, must be behind of Power management settings (scaling_governor interactive)
+    chown system system /sys/kernel/tegra_cap/core_cap_level
+    chown system system /sys/kernel/tegra_cap/core_cap_state
+    chown system system /sys/module/cpu_tegra/parameters/cpu_user_cap
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/go_maxspeed_load
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/max_boost
+
+# EACK
+    chown system system /sys/kernel/debug/tegra_emc/eack_state
 
 # TODO: FIXME, do proper p2p?
 service p2p_supplicant /system/bin/wpa_supplicant \
@@ -183,7 +210,7 @@ service sdcard /system/bin/sdcard /data/media 1023 1023
     class late_start
 
 #BCM
-service hciattach /system/bin/brcm_patchram_plus --enable_hci \
+service hciattach /system/bin/brcm_patchram_plus --enable_hci --use_baudrate_for_download \
     --baudrate 3000000 --patchram /etc/firmware/bcm4330.hcd  --enable_lpm /dev/ttyHS2 \
     --no2bytes --tosleep 5000
     user bluetooth
@@ -207,7 +234,7 @@ service gps-daemon /system/bin/glgps_nvidiaTegra2android -c /system/etc/gps/gpsc
   class late_start
   socket gps seqpacket 0660 gps system
   user gps
-  group system inet
+  group system inet sdcard_rw sdcard_r
 
 # Mount usb drives as /usbdrive. Generally usb drives are formatted with FAT
 # filesystem, so we support FAT as of now.
@@ -217,23 +244,20 @@ service gps-daemon /system/bin/glgps_nvidiaTegra2android -c /system/etc/gps/gpsc
 # on device-removed-/sys/block/sda
 #     umount /mnt/usbdrive
 
-#Prepare TF service
+# start tf_daemon service
 service tf_daemon /system/bin/tf_daemon -storageDir /data/tf -d
-    disabled
     class main
     user root
     group shell
-    oneshot
 
-#Create data directory and start service
-on property:tf.enable=y
+# may restart due to /data/tf not existing yet
+on property:init.svc.tf_daemon=restarting
     mkdir /data/tf
-    start tf_daemon
 
 # Enable NvCpuD, and set it to never poll config again
 on boot
     setprop nvcpud.enabled true
-    setprop nvcpud.refresh_ms -1
+    setprop nvcpud.config_refresh_ms -1
 
 service nvcpud /system/bin/nvcpud
     class main

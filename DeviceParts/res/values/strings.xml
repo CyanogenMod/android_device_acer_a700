@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Device Settings</string>
+
+    <string name="category_screen_title">Screen</string>
+    <string name="touch_sensitivity_head">Touch Sensitivity</string>
+
+    <string name="touch_sensitivity_high">High</string>
+    <string name="touch_sensitivity_medium">Medium</string>
+    <string name="touch_sensitivity_low">Low</string>
+</resources>

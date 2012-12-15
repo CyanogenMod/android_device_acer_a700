@@ -52,11 +52,15 @@ BOARD_USES_TINY_AUDIO_HW := true
 
 BOARD_USES_GENERIC_INVENSENSE := false
 
+# Bluetooth
 BOARD_HAVE_BLUETOOTH := true
 BOARD_HAVE_BLUETOOTH_BCM := true
+BOARD_BLUEDROID_VENDOR_CONF := device/acer/a700/libbt_vndcfg.txt
+BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/acer/a700/bluetooth
 
 USE_OPENGL_RENDERER := true
 BOARD_EGL_CFG := device/acer/a700/prebuilt/etc/egl.cfg
+BOARD_EGL_NEEDS_LEGACY_FB := true
 
 BOARD_HAS_NO_SELECT_BUTTON := true
 # Use this flag if the board has a ext4 partition larger than 2gb

@@ -81,11 +81,14 @@
     <!-- Boolean indicating whether the wifi chipset has background scan support -->
     <bool translatable="false" name="config_wifi_background_scan_support">true</bool>
 
-    <!-- Package name providing network location support. -->
-    <string name="config_networkLocationProviderPackageName" translatable="false">com.google.android.location</string>
+    <!-- Device type information conforming to Annex B format in WiFi Direct specification.
+    The default represents a dual-mode smartphone -->
+    <string translatable="false" name="config_wifi_p2p_device_type">1-0050F204-1</string>
 
-    <!-- Package name providing geocoder API support. -->
-    <string name="config_geocodeProviderPackageName" translatable="false">com.google.android.location</string>
+    <string-array name="config_locationProviderPackageNames" translatable="false">
+        <item>com.android.location.fused</item>
+        <item>com.google.android.location</item>
+    </string-array>
 
     <!-- Flag indicating whether the we should enable the automatic brightness in Settings.
          Software implementation will be used if config_hardware_auto_brightness_available is not set -->
@@ -171,11 +174,20 @@
           -->
     <dimen name="config_viewConfigurationTouchSlop">8.0dip</dimen>
 
+    <!-- Separate software navigation bar required on this device. -->
+    <bool name="config_showNavigationBar">true</bool>
+
     <!-- If this is true, the screen will come on when you unplug usb/power/whatever. -->
     <bool name="config_unplugTurnsOnScreen">true</bool>
 
     <!-- The attenuation in dB applied to the lock/unlock sounds. -->
     <integer name="config_lockSoundVolumeDb">0</integer>
+
+    <!--  Maximum number of supported users -->
+    <integer name="config_multiuserMaximumUsers">8</integer>
+
+    <!-- reference volume index for music stream to limit headphone volume and display warning -->
+    <integer name="config_safe_media_volume_index">6</integer>
 
     <!-- Device has a h/w rotation lock switch -->
     <bool name="config_hasRotationLockSwitch">true</bool>
@@ -185,6 +197,4 @@
          the GPU to handle. -->
     <integer name="config_wallpaperMaxWidth">2048</integer>
 
-    <!-- Setting to false will disable CM's IME switcher implementation for tablets -->
-    <bool name="config_show_cmIMESwitcher">false</bool>
 </resources>

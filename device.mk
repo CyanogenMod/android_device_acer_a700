@@ -4,7 +4,6 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 $(call inherit-product, device/common/gps/gps_us_supl.mk)
 
 # TODO: LtoDownloader
-# TODO: Figure out of we need NvCPLSvc, if so how do we make it work
 
 $(call inherit-product-if-exists, vendor/acer/a700/a700-vendor.mk)
 

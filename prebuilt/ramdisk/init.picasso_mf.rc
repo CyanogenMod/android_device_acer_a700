@@ -137,6 +137,7 @@ on boot
     write /sys/module/cpu_tegra/parameters/balanced_mode 1200000
     write /sys/module/cpu_tegra/parameters/powersaving_mode 1200000
     write /sys/class/graphics/fb0/device/smartdimmer/aggress_table 1:1,3/2:3,3/3:3,3
+    write /sys/dev-power_mode/power_mode 1
 
 # Default Read Ahead value for sdcards
     write /sys/block/mmcblk0/queue/read_ahead_kb 2048

@@ -113,7 +113,7 @@ struct tiny_dev_cfg {
 enum {
 	IN = 0,
 	OUT = 1,
-	INOUT_SIZE = OUT,
+	INOUT_SIZE,
 };
 
 struct tiny_audio_device {
@@ -185,7 +185,7 @@ void select_devices(struct tiny_audio_device *adev)
 
 	for (j = 0; j < INOUT_SIZE; j++) {
 	    if (adev->active_devices[j] == adev->devices[j])
-		break;
+		continue;
 
 	    ALOGV("Changing devices %x => %x\n", adev->active_devices[j], adev->devices[j]);
 

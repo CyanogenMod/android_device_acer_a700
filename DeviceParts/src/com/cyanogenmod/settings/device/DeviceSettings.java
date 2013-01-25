@@ -7,8 +7,10 @@ import android.preference.PreferenceActivity;
 public class DeviceSettings extends PreferenceActivity  {
 
     public static final String KEY_TOUCH_SENSITIVITY = "touch_sensitivity";
+    public static final String KEY_POWER_MODE = "power_mode";
 
     private ListPreference mTouchSensitivity;
+    private ListPreference mPowerMode;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -18,6 +20,10 @@ public class DeviceSettings extends PreferenceActivity  {
         mTouchSensitivity = (ListPreference) findPreference(KEY_TOUCH_SENSITIVITY);
         mTouchSensitivity.setEnabled(TouchSensitivity.isSupported());
         mTouchSensitivity.setOnPreferenceChangeListener(new TouchSensitivity());
+
+        mPowerMode = (ListPreference) findPreference(KEY_POWER_MODE);
+        mPowerMode.setEnabled(PowerMode.isSupported());
+        mPowerMode.setOnPreferenceChangeListener(new PowerMode());
     }
 
 }

@@ -13,4 +13,16 @@
 	        android:defaultValue="1" />
 	</PreferenceCategory>
 
+	<PreferenceCategory
+	    android:title="@string/category_power_title">
+	    <!-- Touch Sensitivity -->
+	    <ListPreference
+	        android:key="power_mode"
+	        android:title="@string/power_mode_head"
+	        android:summary="%s"
+	        android:entries="@array/power_mode_entries"
+	        android:entryValues="@array/power_mode_entries_values"
+	        android:defaultValue="2" />
+	</PreferenceCategory>
+
 </PreferenceScreen>

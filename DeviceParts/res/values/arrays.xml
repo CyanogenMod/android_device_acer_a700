@@ -10,4 +10,16 @@
         <item>1</item>
         <item>2</item>
     </string-array>
+
+    <string-array name="power_mode_entries">
+        <item>@string/power_mode_high</item>
+        <item>@string/power_mode_medium</item>
+        <item>@string/power_mode_low</item>
+    </string-array>
+
+    <string-array name="power_mode_entries_values" translatable="false">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
 </resources>

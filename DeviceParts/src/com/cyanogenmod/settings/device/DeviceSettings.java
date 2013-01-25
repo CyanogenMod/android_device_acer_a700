@@ -6,7 +6,7 @@ import android.preference.PreferenceActivity;
 
 public class DeviceSettings extends PreferenceActivity  {
 
-    public static final String KEY_TOUCH_SENSITIVITY = "touch_sensitivity";
+    public static final String KEY_TOUCH_SENSITIVITY = "touch_sensitivity_raw";
     public static final String KEY_POWER_MODE = "power_mode";
 
     private ListPreference mTouchSensitivity;

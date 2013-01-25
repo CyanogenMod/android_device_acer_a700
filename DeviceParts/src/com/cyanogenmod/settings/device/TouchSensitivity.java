@@ -9,7 +9,7 @@ import android.preference.PreferenceManager;
 
 public class TouchSensitivity implements OnPreferenceChangeListener {
 
-    private static final String FILE = "/sys/Touch/sensitivity";
+    private static final String FILE = "/sys/Touch/sensitivity_raw";
 
     public static boolean isSupported() {
         return Utils.fileExists(FILE);
@@ -21,7 +21,7 @@ public class TouchSensitivity implements OnPreferenceChangeListener {
         }
 
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        Utils.writeValue(FILE, sharedPrefs.getString(DeviceSettings.KEY_TOUCH_SENSITIVITY, "1"));
+        Utils.writeValue(FILE, sharedPrefs.getString(DeviceSettings.KEY_TOUCH_SENSITIVITY, "70"));
     }
 
     @Override

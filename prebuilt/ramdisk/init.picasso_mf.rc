@@ -84,10 +84,10 @@ on boot
 
 # Touch
     chmod 644 /sys/Touch/plugged
-    chmod 664 /sys/Touch/sensitivity
+    chmod 664 /sys/Touch/sensitivity_raw
     chmod 664 /sys/Touch/filter
     chown system system /sys/Touch/plugged
-    chown system system /sys/Touch/sensitivity
+    chown system system /sys/Touch/sensitivity_raw
     chown system system /sys/Touch/filter
 
 # powerkey led

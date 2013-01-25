@@ -5,6 +5,7 @@
     <string name="category_screen_title">Screen</string>
     <string name="touch_sensitivity_head">Touch Sensitivity</string>
 
+    <string name="touch_sensitivity_very_high">Very High</string>
     <string name="touch_sensitivity_high">High</string>
     <string name="touch_sensitivity_medium">Medium</string>
     <string name="touch_sensitivity_low">Low</string>

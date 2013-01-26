@@ -23,10 +23,13 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 # Don't store dalvik on /cache, it gets annoying when /cache is wiped
 # by the bootloader everytime we boot into recovery
 PRODUCT_PROPERTY_OVERRIDES += \
-    dalvik.vm.dexopt-data-only=1
-
-# The "7 inch" profile is more suited for us than the general profile
-include frameworks/native/build/tablet-7in-hdpi-1024-dalvik-heap.mk
+    dalvik.vm.dexopt-data-only=1 \
+    dalvik.vm.heapstartsize=8m \
+    dalvik.vm.heapgrowthlimit=96m \
+    dalvik.vm.heapsize=384m \
+    dalvik.vm.heaptargetutilization=0.75 \
+    dalvik.vm.heapminfree=512k \
+    dalvik.vm.heapmaxfree=8m
 
 # we have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise

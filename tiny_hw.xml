@@ -19,6 +19,7 @@
         <ctl name="Left Input Mux" val="IN3L" />
         <ctl name="Mic Bias Switch" val="0" />
         <ctl name="Headphone Volume" val="48" />
+        <ctl name="Speaker Volume" val="63" />
         <ctl name="Speaker Switch" val="1" />
     </path>
 

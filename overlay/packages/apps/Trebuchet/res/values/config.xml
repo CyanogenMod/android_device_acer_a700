@@ -1,4 +1,0 @@
-<resources>
-    <!-- Whether or not to use the wallpaper hack by default -->
-    <bool name="config_workspaceDefaultWallpaperHack">true</bool>
-</resources>

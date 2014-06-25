@@ -22,7 +22,7 @@ PRODUCT_MODEL := A700
 PRODUCT_MANUFACTURER := Acer
 
 PRODUCT_BUILD_PROP_OVERRIDES += \
-    PRODUCT_NAME=a700_emea_cus1 \
+    PRODUCT_NAME=a700_emea_fr \
     TARGET_DEVICE=picasso_mf \
-    BUILD_FINGERPRINT="acer/a700_emea_cus1/picasso_mf:4.0.4/IMM76D/1337332281:user/release-keys" \
-    PRIVATE_BUILD_DESC="a700_emea_cus1-user 4.0.4 IMM76D 1337332281 release-keys"
+    BUILD_FINGERPRINT="acer/a700_emea_fr/picasso_mf:4.1.1/JRO03H/1351003263:user/release-keys" \
+    PRIVATE_BUILD_DESC="a700_emea_fr-user 4.1.1 JRO03H 1351003263 release-keys"
